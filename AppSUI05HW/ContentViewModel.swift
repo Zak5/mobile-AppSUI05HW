@@ -6,7 +6,9 @@
 //
 
 import SwiftUI
+import WidgetKit
 
+@MainActor
 final class ContentViewModel: ObservableObject {
     
     @Published var allSuffixes = [(String, Int)]()

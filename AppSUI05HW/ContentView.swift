@@ -9,24 +9,33 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject var viewModel: ContentViewModel = ContentViewModel()
+    @State private var tabType: TabType = .search
     
     var body: some View {
-        TabView {
+        TabView(selection: $tabType) {
             SearchView(searchText: $viewModel.searchText)
                 .tabItem {
                     Label("Search", systemImage: "text.magnifyingglass")
                 }
-                .tag(0)
+                .tag(TabType.search)
             SuffixView()
                 .tabItem {
                     Label("Suffix", systemImage: "a.magnify")
                 }
                 .environmentObject(viewModel)
-                .tag(1)
+                .tag(TabType.suffix)
         }.task {
             await viewModel.getSuffixes()
+        }.onOpenURL { url in
+            tabType = url.absoluteString == "widget://suffix-view" ? .suffix : .search
+            print("Received deep link: \(url)")
         }
     }
+}
+
+private enum TabType {
+    case search
+    case suffix
 }
 
 struct ContentView_Previews: PreviewProvider {
