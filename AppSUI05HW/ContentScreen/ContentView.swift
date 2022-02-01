@@ -13,7 +13,7 @@ struct ContentView: View {
     
     var body: some View {
         TabView(selection: $tabType) {
-            SearchView(searchText: $viewModel.searchText)
+            SearchView()
                 .tabItem {
                     Label("Search", systemImage: "text.magnifyingglass")
                 }
@@ -22,13 +22,15 @@ struct ContentView: View {
                 .tabItem {
                     Label("Suffix", systemImage: "a.magnify")
                 }
-                .environmentObject(viewModel)
                 .tag(TabType.suffix)
-        }.task {
-            await viewModel.getSuffixes()
-        }.onOpenURL { url in
+        }
+        .environmentObject(viewModel)
+        .onOpenURL { url in
             tabType = url.absoluteString == "widget://suffix-view" ? .suffix : .search
             print("Received deep link: \(url)")
+        }
+        .task {
+            await viewModel.getSuffixes()
         }
     }
 }

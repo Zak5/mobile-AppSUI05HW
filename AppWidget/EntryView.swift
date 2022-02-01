@@ -15,12 +15,18 @@ struct EntryView: View {
             HStack {
                 WidgetNavigationLink(destination: "widget://search-view", systemIconName: "text.magnifyingglass")
                 WidgetNavigationLink(destination: "widget://suffix-view", systemIconName: "a.magnify")
-             }
-            if let searchResult = entry.searchResult {
-                Text("\(searchResult.suffix) - \(searchResult.occurrences)")
+            }
+            if let statistics = entry.statistics {
+                ForEach(statistics) { searchResult in
+                    Text("\(searchResult.suffix) - \(searchResult.occurrences)")
+                    if searchResult != statistics.last {
+                        Divider()
+                    }
+                }
             } else {
                 Text("No results")
             }
+            Spacer()
         }
     }
 }

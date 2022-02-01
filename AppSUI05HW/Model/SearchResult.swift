@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct SearchResult: Codable {
+struct SearchResult: Codable, Identifiable, Equatable {
+    var id = UUID()
     let suffix: String
     let occurrences: Int
 }

@@ -19,7 +19,7 @@ struct SuffixView: View {
             }
             .pickerStyle(.segmented)
             .padding()
-            
+
             Group{
                 switch selectedList {
                 case .all: SuffixAllListView()
@@ -32,29 +32,26 @@ struct SuffixView: View {
     }
 }
 
-private enum ListType: CaseIterable {
-    case all
-    case top
-
-    var label: String {
-        get {
-            switch self {
-            case .all:
-                return "All"
-            case .top:
-                return "Top 10"
-            }
-        }
-    }
-}
-
 struct SuffixAllListView: View {
     @EnvironmentObject var viewModel: ContentViewModel
     
     var body: some View {
-        List {
-            ForEach(viewModel.allSuffixes, id: \.0) { suffixAndOccurrences in
-                SuffixCellView(suffixAndOccurrences: suffixAndOccurrences)
+        VStack {
+            Picker("Sort type", selection: $viewModel.sortType) {
+                ForEach(SortType.allCases, id: \.self) { sortType in
+                    Text(sortType.label).tag(sortType)
+                }
+            }
+            .onChange(of: viewModel.sortType, perform: { sortType in
+                Task {
+                    await viewModel.sortAllSuffixes()
+                }
+            })
+            
+            List {
+                ForEach(viewModel.allSuffixes, id: \.0) { suffixAndOccurrences in
+                    SuffixCellView(suffixAndOccurrences: suffixAndOccurrences)
+                }
             }
         }
     }
@@ -77,6 +74,22 @@ struct SuffixCellView: View {
     
     var body: some View {
         Text(suffixAndOccurrences.1 == 1 ? "\(suffixAndOccurrences.0)" : "\(suffixAndOccurrences.0) - \(suffixAndOccurrences.1)")
+    }
+}
+
+private enum ListType: CaseIterable {
+    case all
+    case top
+
+    var label: String {
+        get {
+            switch self {
+            case .all:
+                return "All"
+            case .top:
+                return "Top 10"
+            }
+        }
     }
 }
 

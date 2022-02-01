@@ -25,35 +25,35 @@ struct AppWidget: Widget {
 
 struct Provider: TimelineProvider {
     
-    @AppStorage("searchResult", store: UserDefaults(suiteName: "group.com.zakk.AppSUI05HW"))
-    var searchResultData: Data = Data()
+    @AppStorage("statistics", store: UserDefaults(suiteName: "group.com.zakk.AppSUI05HW"))
+    var statisticsData: Data = Data()
     
-    func placeholder(in context: Context) -> SearchResultEntry {
-        SearchResultEntry(searchResult: nil)
+    func placeholder(in context: Context) -> StatisticsEntry {
+        StatisticsEntry(statistics: nil)
     }
         
-    func getSnapshot(in context: Context, completion: @escaping (SearchResultEntry) -> Void) {
-        guard let searchResult = try? JSONDecoder().decode(SearchResult.self, from: searchResultData) else { return }
-        let entry = SearchResultEntry(searchResult: searchResult)
+    func getSnapshot(in context: Context, completion: @escaping (StatisticsEntry) -> Void) {
+        guard let statistics = try? JSONDecoder().decode([SearchResult].self, from: statisticsData) else { return }
+        let entry = StatisticsEntry(statistics: statistics)
         completion(entry)
     }
     
-    func getTimeline(in context: Context, completion: @escaping (Timeline<SearchResultEntry>) -> Void) {
-        guard let searchResult = try? JSONDecoder().decode(SearchResult.self, from: searchResultData) else { return }
-        let entry = SearchResultEntry(searchResult: searchResult)
+    func getTimeline(in context: Context, completion: @escaping (Timeline<StatisticsEntry>) -> Void) {
+        guard let statistics = try? JSONDecoder().decode([SearchResult].self, from: statisticsData) else { return }
+        let entry = StatisticsEntry(statistics: statistics)
         let timeline = Timeline(entries:[entry], policy: .never)
         completion(timeline)
     }
 }
 
-struct SearchResultEntry: TimelineEntry {
+struct StatisticsEntry: TimelineEntry {
     let date: Date = Date()
-    let searchResult: SearchResult?
+    let statistics: [SearchResult]?
 }
 
 struct AppWidget_Previews: PreviewProvider {
     static var previews: some View {
-        EntryView(entry: SearchResultEntry(searchResult: nil))
+        EntryView(entry: StatisticsEntry(statistics: nil))
             .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }

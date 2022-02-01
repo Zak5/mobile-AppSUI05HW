@@ -8,15 +8,18 @@
 import SwiftUI
 
 struct SearchView: View {
-    @Binding var searchText: String
-    
+    @EnvironmentObject var viewModel: ContentViewModel
+
     var body: some View {
         HStack {
             Image(systemName: "magnifyingglass")
-            TextField("Search", text: $searchText)
+            TextField("Search", text: $viewModel.searchText)
         }
         .underlineTextField()
         .padding()
+        .onSubmit {
+            viewModel.search()
+        }
     }
 }
 
@@ -31,9 +34,9 @@ extension View {
 }
 
 struct TextView_Previews: PreviewProvider {
-    @State static var searchText: String = ""
     
     static var previews: some View {
-        SearchView(searchText: $searchText)
+        SearchView()
+            .environmentObject(ContentViewModel())
     }
 }

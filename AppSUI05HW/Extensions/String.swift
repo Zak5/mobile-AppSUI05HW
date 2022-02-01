@@ -17,13 +17,13 @@ extension String {
         tokenizer.string = self
         
         tokenizer.enumerateTokens(in: self.startIndex..<self.endIndex) { tokenRange, _ in
-            tokens.append(String(self[tokenRange]))
+            tokens.append(String(self[tokenRange]).lowercased())
             return true
         }
         return tokens
     }
     
-    func suffixArray() -> [(String, String)] {
+    func suffixArray(minLength: Int = 0) -> [(String, String)] {
         
         var suffixes: [(String, String)] = []
         
@@ -32,7 +32,9 @@ extension String {
         for token in tokens {
             let sequence = SuffixSequence(string: token)
             for suffix in sequence {
-                suffixes.append((String(suffix), token))
+                if minLength > 0 && suffix.count >= minLength {
+                    suffixes.append((String(suffix), token))
+                }
             }
         }
         

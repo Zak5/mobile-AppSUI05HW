@@ -96,6 +96,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8C0C7D0127A9DB9A00FB10D1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8CB7A7BE27A8798B00722EF8 /* SearchResult.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		8C3B352727A6C95600B382BC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -152,11 +160,8 @@
 				8CB7A7BD27A8639700722EF8 /* AppSUI05HW.entitlements */,
 				8C99A2F227A4861100AFFC3B /* AppSUI05HWApp.swift */,
 				8C3B352727A6C95600B382BC /* Extensions */,
-				8CA93BC427A5312D00E7DAB3 /* ContentViewModel.swift */,
-				8C99A2F427A4861100AFFC3B /* ContentView.swift */,
-				8C99A30227A487D700AFFC3B /* SearchView.swift */,
-				8C99A30027A4879400AFFC3B /* SuffixView.swift */,
-				8CB7A7BE27A8798B00722EF8 /* SearchResult.swift */,
+				8CDE7C7F27A9D94100AFECBA /* ContentScreen */,
+				8C0C7D0127A9DB9A00FB10D1 /* Model */,
 				8C99A2F627A4861200AFFC3B /* Assets.xcassets */,
 				8C99A2F827A4861200AFFC3B /* Preview Content */,
 			);
@@ -169,6 +174,17 @@
 				8C99A2F927A4861200AFFC3B /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		8CDE7C7F27A9D94100AFECBA /* ContentScreen */ = {
+			isa = PBXGroup;
+			children = (
+				8CA93BC427A5312D00E7DAB3 /* ContentViewModel.swift */,
+				8C99A2F427A4861100AFFC3B /* ContentView.swift */,
+				8C99A30227A487D700AFFC3B /* SearchView.swift */,
+				8C99A30027A4879400AFFC3B /* SuffixView.swift */,
+			);
+			path = ContentScreen;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
