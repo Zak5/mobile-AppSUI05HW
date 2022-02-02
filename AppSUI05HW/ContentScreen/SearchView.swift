@@ -11,14 +11,17 @@ struct SearchView: View {
     @EnvironmentObject var viewModel: ContentViewModel
 
     var body: some View {
-        HStack {
-            Image(systemName: "magnifyingglass")
-            TextField("Search", text: $viewModel.searchText)
-        }
-        .underlineTextField()
-        .padding()
-        .onSubmit {
-            viewModel.search()
+        VStack {
+            HStack {
+                Image(systemName: "magnifyingglass")
+                TextField("Search", text: $viewModel.searchText)
+            }
+            .underlineTextField()
+            .padding()
+            
+            if let occurrences = viewModel.occurrences {
+                Text("occurrences: \(occurrences)")
+            }
         }
     }
 }

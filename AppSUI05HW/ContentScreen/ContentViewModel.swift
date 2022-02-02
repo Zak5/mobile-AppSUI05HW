@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WidgetKit
+import Combine
 
 @MainActor
 final class ContentViewModel: ObservableObject {
@@ -23,10 +24,23 @@ They are endowed with reason and conscience and should act towards one another i
     @AppStorage("statistics", store: UserDefaults(suiteName: "group.com.zakk.AppSUI05HW"))
     var statisticsData: Data = Data()
     
-    var statistics = [SearchResult]()
+    var occurrences: Int?
 
-    var uniqueSuffixes = [String: Int]()
+    private var statistics = [SearchResult]()
+
+    private var uniqueSuffixes = [String: Int]()
     
+    private var subscriptions = Set<AnyCancellable>()
+
+    init() {
+        $searchText
+            .debounce(for: .microseconds(500), scheduler: DispatchQueue.main)
+            .sink(receiveValue: { value in
+                self.search(value)
+            } )
+            .store(in: &subscriptions)
+    }
+
     func getSuffixes() async {
         let suffixArray = userText.suffixArray(minLength: 3)
         for suffix in suffixArray {
@@ -37,9 +51,9 @@ They are endowed with reason and conscience and should act towards one another i
         await sortAllSuffixes()
     }
     
-    func search() {
-        let occurrences = uniqueSuffixes[searchText] ?? 0
-        let searchResult = SearchResult(suffix: searchText, occurrences: occurrences)
+    private func search(_ value: String) {
+        occurrences = uniqueSuffixes[searchText] ?? 0
+        let searchResult = SearchResult(suffix: searchText, occurrences: occurrences ?? 0)
         statistics.append(searchResult)
         passDataToWidget()
     }
