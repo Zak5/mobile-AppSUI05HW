@@ -16,10 +16,7 @@ final class ContentViewModel: ObservableObject {
     @Published var topSuffixes = [(String, Int)]()
     @Published var sortType = SortType.asc
     @Published var searchText = ""
-    @Published var userText = """
-All human beings are born free and equal in dignity and rights. 
-They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood.
-"""
+    @Published var userText = ""
     
     @AppStorage("statistics", store: UserDefaults(suiteName: "group.com.zakk.AppSUI05HW"))
     var statisticsData: Data = Data()
@@ -42,6 +39,7 @@ They are endowed with reason and conscience and should act towards one another i
     }
 
     func getSuffixes() async {
+        await loadUserText()
         let suffixArray = userText.suffixArray(minLength: 3)
         for suffix in suffixArray {
             let occurrences = uniqueSuffixes[suffix.0] ?? 0
@@ -70,6 +68,12 @@ They are endowed with reason and conscience and should act towards one another i
         } else {
             allSuffixes = uniqueSuffixes.sorted(by: { $0.0 > $1.0 })
         }
+    }
+    
+    func loadUserText() async {
+        guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.zakk.AppSUI05HW")?.appendingPathComponent("userText") else { return }
+        guard let data = try? Data(contentsOf: url) else { return }
+        userText = String(data: data, encoding: .utf8)!
     }
 }
 

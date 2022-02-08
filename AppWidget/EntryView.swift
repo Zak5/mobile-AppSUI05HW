@@ -28,6 +28,16 @@ struct EntryView: View {
             }
             Spacer()
         }
+        .widgetURL(URL(string: "widget://search-view")!)
+        .task {
+            guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.com.zakk.AppSUI05HW")?.appendingPathComponent("userText") else { return }
+            let userText = """
+                All human beings are born free and equal in dignity and rights.
+                They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood.
+                """
+            let data = Data(userText.utf8)
+            try? data.write(to: url)
+        }
     }
 }
 

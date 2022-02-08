@@ -28,6 +28,9 @@ struct ContentView: View {
         .onOpenURL { url in
             tabType = url.absoluteString == "widget://suffix-view" ? .suffix : .search
             print("Received deep link: \(url)")
+            Task {
+                await viewModel.getSuffixes()
+            }
         }
         .task {
             await viewModel.getSuffixes()
